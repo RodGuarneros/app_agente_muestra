@@ -104,6 +104,19 @@ iframe {
 
 st.markdown("""
 <style>
+/* Forzar claro en toda la parte inferior de la app */
+[data-testid="stBottomBlockContainer"] {
+    background: #F7FAF8 !important;
+}
+
+[data-testid="stDecoration"] {
+    background: #F7FAF8 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
 html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background-color: #FFFFFF !important;
     color: #111111 !important;
