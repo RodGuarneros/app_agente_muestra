@@ -25,28 +25,24 @@ st.set_page_config(page_title="Retail Mobile Commerce Assistant", layout="wide")
 
 st.markdown("""
 <style>
-/* Fondo general */
+/* ===== Fondo general ===== */
 html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background: #F7FAF8 !important;
     color: #0E1B16 !important;
 }
 
-/* Header superior */
 [data-testid="stHeader"] {
     background: #F7FAF8 !important;
 }
 
-/* Toolbar superior derecha */
 [data-testid="stToolbar"] {
     background: #F7FAF8 !important;
 }
 
-/* Sidebar */
 [data-testid="stSidebar"] {
     background: #EAF6EF !important;
 }
 
-/* Zona principal */
 [data-testid="stMain"] {
     background: #F7FAF8 !important;
 }
@@ -55,13 +51,11 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background: #F7FAF8 !important;
 }
 
-/* Contenedor general de bloques */
 .block-container {
     background: #F7FAF8 !important;
     padding-bottom: 2rem !important;
 }
 
-/* Evita bandas negras en columnas / contenedores */
 [data-testid="column"] {
     background: transparent !important;
 }
@@ -70,106 +64,34 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background: transparent !important;
 }
 
-/* Zona del chat input fija abajo */
+/* ===== Chat input ===== */
 [data-testid="stChatInput"] {
-    background: #F7FAF8 !important;
+    background: transparent !important;
+    padding-top: 10px !important;
 }
 
 [data-testid="stChatInput"] > div {
-    background: #F7FAF8 !important;
-}
-
-/* Banda inferior donde a veces Streamlit deja oscuro */
-[data-testid="ScrollToBottomContainer"] {
-    background: #F7FAF8 !important;
-}
-
-/* Formularios y contenedores cercanos al input */
-[data-testid="stForm"] {
-    background: transparent !important;
-}
-
-/* Inputs normales */
-input, textarea {
     background: #FFFFFF !important;
-    color: #0E1B16 !important;
-}
-
-/* Si algún iframe o elemento embebido arrastra fondo oscuro */
-iframe {
-    background: transparent !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-
-/* Caja del input */
-[data-testid="stChatInput"] > div {
-    background: #2F9E73  !important;
     border: 1.5px solid #DDE5E1 !important;
     border-radius: 18px !important;
     padding: 6px 10px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
 }
 
-/* Área donde escribes */
 [data-testid="stChatInput"] textarea {
-    background: #2F9E73  !important;
-    color: #0B7A4B !important; /* verde */
-    font-style: italic !important; /* cursiva */
+    background: #FFFFFF !important;
+    color: #0B7A4B !important;
+    font-style: italic !important;
     font-size: 15px !important;
+    border: none !important;
 }
 
-/* Placeholder (el texto que ves ahora) */
 [data-testid="stChatInput"] textarea::placeholder {
     color: #0B7A4B !important;
-    opacity: 0.7 !important;
+    opacity: 0.75 !important;
     font-style: italic !important;
 }
 
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-/* Forzar claro en toda la parte inferior de la app */
-[data-testid="stBottomBlockContainer"] {
-    background: #F7FAF8 !important;
-}
-
-[data-testid="stDecoration"] {
-    background: #F7FAF8 !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-
-/* Contenedor del input */
-[data-testid="stChatInput"] {
-    background: transparent !important;
-    padding-top: 10px;
-}
-
-/* Caja interna */
-[data-testid="stChatInput"] > div {
-    background: #FFFFFF !important;
-    border: 1.5px solid #DDE5E1 !important;
-    border-radius: 18px !important;
-    padding: 6px 10px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-/* Input real */
-[data-testid="stChatInput"] textarea {
-    background: transparent !important;
-    color: #0E1B16 !important;
-    font-size: 15px !important;
-}
-
-/* Botón enviar (flecha) */
 [data-testid="stChatInput"] button {
     background: #0B7A4B !important;
     color: white !important;
@@ -178,47 +100,38 @@ st.markdown("""
     margin-left: 8px !important;
 }
 
-/* Hover */
 [data-testid="stChatInput"] button:hover {
     background: #095c39 !important;
 }
 
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
-    background-color: #FFFFFF !important;
-    color: #111111 !important;
-}
-
-[data-testid="stHeader"] {
+/* Esta línea es la clave para quitar el negro interno */
+[data-testid="stChatInput"] div[role="textbox"] {
     background: #FFFFFF !important;
 }
 
-[data-testid="stToolbar"] {
-    background: #FFFFFF !important;
+/* Parte inferior */
+[data-testid="ScrollToBottomContainer"] {
+    background: #F7FAF8 !important;
 }
 
-[data-testid="stSidebar"] {
-    background-color: #EEF8F1 !important;
+[data-testid="stBottomBlockContainer"] {
+    background: #F7FAF8 !important;
 }
 
-[data-testid="stMainBlockContainer"] {
-    background-color: #FFFFFF !important;
+[data-testid="stDecoration"] {
+    background: #F7FAF8 !important;
 }
 
-section.main > div {
-    background-color: #FFFFFF !important;
+/* Inputs generales */
+input, textarea {
+    color: #0E1B16 !important;
 }
 
-div.block-container {
-    background-color: #FFFFFF !important;
+iframe {
+    background: transparent !important;
 }
 </style>
 """, unsafe_allow_html=True)
-
 MAX_TURNS = 8
 
 if "chats" not in st.session_state:
@@ -1811,17 +1724,6 @@ with hero_col2:
 
     if lottie_robot:
 
-        st.markdown("""
-<div style="
-    background:#FFFFFF;
-    border-radius:24px;
-    padding:18px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-">
-""", unsafe_allow_html=True)
-
         st_lottie(
             lottie_robot,
             height=350,
@@ -1895,7 +1797,7 @@ if current_turns >= MAX_TURNS:
         create_new_chat()
         st.rerun()
 else:
-    question = st.chat_input("¿En qué te puedo ayudar")
+    question = st.chat_input("¿En qué te puedo ayudar?")
 
 
 for msg in get_current_history():
