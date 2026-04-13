@@ -1724,13 +1724,23 @@ with hero_col2:
 
     if lottie_robot:
 
-        st_lottie(
-            lottie_robot,
-            height=350,
-            key="hero_robot",
-            loop=True,
-            quality="high",
-        )
+        if lottie_robot:
+            st.markdown("""
+    <div style="
+        background:#FFFFFF;
+        border-radius:24px;
+        height:350px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#0B7A4B;
+        font-size:24px;
+        font-weight:700;
+    ">
+        FONDO BLANCO
+    </div>
+    """, unsafe_allow_html=True)
+
 
 
 with st.sidebar:
