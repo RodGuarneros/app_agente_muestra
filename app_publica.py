@@ -117,6 +117,48 @@ st.markdown("""
 
 st.markdown("""
 <style>
+
+/* Contenedor del input */
+[data-testid="stChatInput"] {
+    background: transparent !important;
+    padding-top: 10px;
+}
+
+/* Caja interna */
+[data-testid="stChatInput"] > div {
+    background: #FFFFFF !important;
+    border: 1.5px solid #DDE5E1 !important;
+    border-radius: 18px !important;
+    padding: 6px 10px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Input real */
+[data-testid="stChatInput"] textarea {
+    background: transparent !important;
+    color: #0E1B16 !important;
+    font-size: 15px !important;
+}
+
+/* Botón enviar (flecha) */
+[data-testid="stChatInput"] button {
+    background: #0B7A4B !important;
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 6px 10px !important;
+    margin-left: 8px !important;
+}
+
+/* Hover */
+[data-testid="stChatInput"] button:hover {
+    background: #095c39 !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
 html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background-color: #FFFFFF !important;
     color: #111111 !important;
