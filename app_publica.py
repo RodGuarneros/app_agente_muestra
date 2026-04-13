@@ -104,6 +104,35 @@ iframe {
 
 st.markdown("""
 <style>
+
+/* Caja del input */
+[data-testid="stChatInput"] > div {
+    background: #FFFFFF !important;
+    border: 1.5px solid #DDE5E1 !important;
+    border-radius: 18px !important;
+    padding: 6px 10px !important;
+}
+
+/* Área donde escribes */
+[data-testid="stChatInput"] textarea {
+    background: #FFFFFF !important;
+    color: #0B7A4B !important; /* verde */
+    font-style: italic !important; /* cursiva */
+    font-size: 15px !important;
+}
+
+/* Placeholder (el texto que ves ahora) */
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #0B7A4B !important;
+    opacity: 0.7 !important;
+    font-style: italic !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
 /* Forzar claro en toda la parte inferior de la app */
 [data-testid="stBottomBlockContainer"] {
     background: #F7FAF8 !important;
