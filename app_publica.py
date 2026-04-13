@@ -1382,7 +1382,7 @@ MEJOR_MERCADO_DARK = "#0E241C"
 MEJOR_MERCADO_TEXT = "#264236"
 MEJOR_MERCADO_BORDER = "#D1F1DE"
 
-LOTTIE_URL = "https://assets3.lottiefiles.com/packages/lf20_zrqthn6o.json"
+LOTTIE_URL = "https://assets9.lottiefiles.com/packages/lf20_touohxv0.json"
 lottie_robot = load_lottie(LOTTIE_URL)
 
 
