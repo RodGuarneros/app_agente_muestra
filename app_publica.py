@@ -1732,7 +1732,6 @@ with hero_col2:
             quality="high",
         )
 
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with st.sidebar:
     st.image("https://images.openai.com/static-rsc-3/BCxseKU2L3XoIXA8hoPYo5BAqjqFs6IQQqJ7A20b_-Pa_6hqkMFBTcrjIs4gYfvyg-YR1nQh9YNOZWW2NL9goPXnwOG6tUGP9wZr4go0jfI?purpose=fullsize&v=1", use_container_width=True)
