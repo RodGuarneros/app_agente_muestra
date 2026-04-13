@@ -1634,41 +1634,14 @@ with k4:
     """, unsafe_allow_html=True)
 
 with hero_col2:
-    st.markdown(
-        """
-        <div style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        ">
-        """,
-        unsafe_allow_html=True
-    )
-
     if lottie_robot:
-
-        st.markdown("""
-<div style="
-    background:#FFFFFF;
-    border-radius:24px;
-    padding:18px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-">
-""", unsafe_allow_html=True)
-
         st_lottie(
             lottie_robot,
             height=350,
             key="hero_robot",
-            loop=False,
+            loop=True,
             quality="high",
         )
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
 with st.sidebar:
     st.image("https://images.openai.com/static-rsc-3/BCxseKU2L3XoIXA8hoPYo5BAqjqFs6IQQqJ7A20b_-Pa_6hqkMFBTcrjIs4gYfvyg-YR1nQh9YNOZWW2NL9goPXnwOG6tUGP9wZr4go0jfI?purpose=fullsize&v=1", use_container_width=True)
 
