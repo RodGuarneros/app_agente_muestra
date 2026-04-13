@@ -1647,6 +1647,18 @@ with hero_col2:
     )
 
     if lottie_robot:
+
+        st.markdown("""
+<div style="
+    background:#FFFFFF;
+    border-radius:24px;
+    padding:18px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+">
+""", unsafe_allow_html=True)
+
         st_lottie(
             lottie_robot,
             height=350,
