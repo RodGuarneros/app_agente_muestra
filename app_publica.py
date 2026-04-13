@@ -107,7 +107,7 @@ st.markdown("""
 
 /* Caja del input */
 [data-testid="stChatInput"] > div {
-    background: #FFFFFF !important;
+    background: #2F9E73  !important;
     border: 1.5px solid #DDE5E1 !important;
     border-radius: 18px !important;
     padding: 6px 10px !important;
@@ -115,7 +115,7 @@ st.markdown("""
 
 /* Área donde escribes */
 [data-testid="stChatInput"] textarea {
-    background: #FFFFFF !important;
+    background: #2F9E73  !important;
     color: #0B7A4B !important; /* verde */
     font-style: italic !important; /* cursiva */
     font-size: 15px !important;
@@ -1895,7 +1895,7 @@ if current_turns >= MAX_TURNS:
         create_new_chat()
         st.rerun()
 else:
-    question = st.chat_input("Haz una pregunta sobre la app móvil retail")
+    question = st.chat_input("¿En qué te puedo ayudar")
 
 
 for msg in get_current_history():
