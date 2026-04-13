@@ -25,6 +25,85 @@ st.set_page_config(page_title="Retail Mobile Commerce Assistant", layout="wide")
 
 st.markdown("""
 <style>
+/* Fondo general */
+html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+    background: #F7FAF8 !important;
+    color: #0E1B16 !important;
+}
+
+/* Header superior */
+[data-testid="stHeader"] {
+    background: #F7FAF8 !important;
+}
+
+/* Toolbar superior derecha */
+[data-testid="stToolbar"] {
+    background: #F7FAF8 !important;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: #EAF6EF !important;
+}
+
+/* Zona principal */
+[data-testid="stMain"] {
+    background: #F7FAF8 !important;
+}
+
+[data-testid="stMainBlockContainer"] {
+    background: #F7FAF8 !important;
+}
+
+/* Contenedor general de bloques */
+.block-container {
+    background: #F7FAF8 !important;
+    padding-bottom: 2rem !important;
+}
+
+/* Evita bandas negras en columnas / contenedores */
+[data-testid="column"] {
+    background: transparent !important;
+}
+
+[data-testid="stVerticalBlock"] {
+    background: transparent !important;
+}
+
+/* Zona del chat input fija abajo */
+[data-testid="stChatInput"] {
+    background: #F7FAF8 !important;
+}
+
+[data-testid="stChatInput"] > div {
+    background: #F7FAF8 !important;
+}
+
+/* Banda inferior donde a veces Streamlit deja oscuro */
+[data-testid="ScrollToBottomContainer"] {
+    background: #F7FAF8 !important;
+}
+
+/* Formularios y contenedores cercanos al input */
+[data-testid="stForm"] {
+    background: transparent !important;
+}
+
+/* Inputs normales */
+input, textarea {
+    background: #FFFFFF !important;
+    color: #0E1B16 !important;
+}
+
+/* Si algún iframe o elemento embebido arrastra fondo oscuro */
+iframe {
+    background: transparent !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
 html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background-color: #FFFFFF !important;
     color: #111111 !important;
@@ -1634,7 +1713,31 @@ with k4:
     """, unsafe_allow_html=True)
 
 with hero_col2:
+    st.markdown(
+        """
+        <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        ">
+        """,
+        unsafe_allow_html=True
+    )
+
     if lottie_robot:
+
+        st.markdown("""
+<div style="
+    background:#FFFFFF;
+    border-radius:24px;
+    padding:18px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+">
+""", unsafe_allow_html=True)
+
         st_lottie(
             lottie_robot,
             height=350,
@@ -1642,6 +1745,9 @@ with hero_col2:
             loop=True,
             quality="high",
         )
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
 with st.sidebar:
     st.image("https://images.openai.com/static-rsc-3/BCxseKU2L3XoIXA8hoPYo5BAqjqFs6IQQqJ7A20b_-Pa_6hqkMFBTcrjIs4gYfvyg-YR1nQh9YNOZWW2NL9goPXnwOG6tUGP9wZr4go0jfI?purpose=fullsize&v=1", use_container_width=True)
 
