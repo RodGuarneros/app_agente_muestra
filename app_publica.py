@@ -6,7 +6,6 @@ import re
 import pandas as pd
 import streamlit as st
 from streamlit_lottie import st_lottie
-from langchain_core.prompts import ChatPromptTemplate
 import requests
 import time
 
