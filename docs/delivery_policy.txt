@@ -1,0 +1,4 @@
+Urban Click es una app móvil de retail commerce enfocada en compras rápidas desde smartphone.
+La entrega estándar tarda entre 24 y 48 horas en zonas metropolitanas.
+Las órdenes con store pickup pueden estar listas el mismo día, dependiendo del inventario.
+El envío gratis aplica en productos seleccionados o en compras mayores al umbral promocional.

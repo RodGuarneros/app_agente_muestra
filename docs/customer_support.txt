@@ -1,0 +1,3 @@
+El soporte ayuda con problemas de pago, devoluciones, seguimiento y disponibilidad de productos.
+Los pedidos cancelados pueden deberse a falta de stock o validación fallida del pago.
+Si un producto no está disponible, el sistema puede sugerir alternativas relacionadas.

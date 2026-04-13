@@ -1,0 +1,3 @@
+La app móvil permite explorar productos, comparar precios, revisar promociones y rastrear pedidos.
+Los usuarios pueden pagar con tarjeta, transferencia o contra entrega en pedidos elegibles.
+La experiencia está diseñada primero para móvil, con navegación simple y confirmaciones rápidas.
