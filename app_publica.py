@@ -1382,7 +1382,7 @@ MEJOR_MERCADO_DARK = "#0E241C"
 MEJOR_MERCADO_TEXT = "#264236"
 MEJOR_MERCADO_BORDER = "#D1F1DE"
 
-LOTTIE_URL = "https://assets3.lottiefiles.com/packages/lf20_zrqthn6o.json"
+LOTTIE_URL = "https://assets9.lottiefiles.com/packages/lf20_touohxv0.json"
 lottie_robot = load_lottie(LOTTIE_URL)
 
 
@@ -1724,23 +1724,13 @@ with hero_col2:
 
     if lottie_robot:
 
-        if lottie_robot:
-            st.markdown("""
-    <div style="
-        background:#FFFFFF;
-        border-radius:24px;
-        height:350px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        color:#0B7A4B;
-        font-size:24px;
-        font-weight:700;
-    ">
-        FONDO BLANCO
-    </div>
-    """, unsafe_allow_html=True)
-
+        st_lottie(
+            lottie_robot,
+            height=350,
+            key="hero_robot",
+            loop=True,
+            quality="high",
+        )
 
 
 with st.sidebar:
