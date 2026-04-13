@@ -23,6 +23,39 @@ DOCS_DIR = BASE_DIR / "docs"
 
 st.set_page_config(page_title="Retail Mobile Commerce Assistant", layout="wide")
 
+st.markdown("""
+<style>
+html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+    background-color: #FFFFFF !important;
+    color: #111111 !important;
+}
+
+[data-testid="stHeader"] {
+    background: #FFFFFF !important;
+}
+
+[data-testid="stToolbar"] {
+    background: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #EEF8F1 !important;
+}
+
+[data-testid="stMainBlockContainer"] {
+    background-color: #FFFFFF !important;
+}
+
+section.main > div {
+    background-color: #FFFFFF !important;
+}
+
+div.block-container {
+    background-color: #FFFFFF !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 MAX_TURNS = 8
 
 if "chats" not in st.session_state:
