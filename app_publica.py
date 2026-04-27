@@ -5,10 +5,13 @@ from typing import List, Tuple
 import re
 import pandas as pd
 import streamlit as st
-from streamlit_lottie import st_lottie
+from streamlit_lottie import st_lottie # type: ignore
 import requests
 import time
-
+from streamlit_mic_recorder import mic_recorder # type: ignore
+import speech_recognition as sr # type: ignore
+import tempfile
+import streamlit.components.v1 as components
 
 @st.cache_data
 def load_lottie(url: str):
@@ -161,8 +164,23 @@ if "scatter_numeric_cols" not in st.session_state:
 if "welcome_shown" not in st.session_state:
     st.session_state.welcome_shown = {}
 
+if "voice_mode" not in st.session_state:
+    st.session_state.voice_mode = False
+
+if "last_question_from_voice" not in st.session_state:
+    st.session_state.last_question_from_voice = False
+
+if "pending_voice_question" not in st.session_state:
+    st.session_state.pending_voice_question = None
+
+if "last_response_audio_path" not in st.session_state:
+    st.session_state.last_response_audio_path = None
+
 if "pending_welcome_for_chat" not in st.session_state:
     st.session_state.pending_welcome_for_chat = None
+
+if "audio_counter" not in st.session_state:
+    st.session_state.audio_counter = 0
 
 # -----------------------------
 # Helpers
@@ -286,6 +304,102 @@ def classify_question(question: str) -> str:
         return "sql"
 
     return "docs"
+
+def autoplay_audio(audio_path: str):
+    with open(audio_path, "rb") as f:
+        audio_bytes = f.read()
+
+    st.session_state.audio_counter += 1
+
+    st.audio(
+        audio_bytes,
+        format="audio/mp3",
+        start_time=0
+    )
+
+def normalize_currency_for_voice(text: str) -> str:
+    # convierte $123 → 123 pesos
+    text = re.sub(r"\$\s*([0-9,]+(\.[0-9]+)?)", r"\1 pesos", text)
+    return text
+
+def speak_with_browser_voice(text: str):
+    text = normalize_currency_for_voice(text)
+    safe_text = (
+        text.replace("\\", "\\\\")
+            .replace("`", "\\`")
+            .replace("\n", " ")
+            .replace('"', "'")
+    )
+
+    components.html(
+        f"""
+        <div id="voiceBox" style="
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:10px 14px;
+            border-radius:16px;
+            background:#F2FBF6;
+            border:1px solid #CFE7D8;
+            color:#075C39;
+            font-weight:700;
+            font-family:Arial, sans-serif;
+        ">
+            <span id="speaker" style="font-size:24px;">🔊</span>
+            <span id="wave" style="font-size:18px; letter-spacing:2px;">▁ ▃ ▅ ▇ ▅ ▃ ▁</span>
+            <span id="label">Respondiendo por voz...</span>
+        </div>
+
+        <script>
+        const text = `{safe_text}`;
+        const box = document.getElementById("voiceBox");
+        const label = document.getElementById("label");
+
+        function animate() {{
+            let i = 0;
+            const frames = ["▁ ▃ ▅ ▇ ▅ ▃ ▁", "▃ ▅ ▇ ▅ ▃ ▁ ▃", "▅ ▇ ▅ ▃ ▁ ▃ ▅"];
+            const wave = document.getElementById("wave");
+
+            return setInterval(() => {{
+                wave.innerText = frames[i % frames.length];
+                i++;
+            }}, 250);
+        }}
+
+        const anim = animate();
+
+        setTimeout(() => {{
+            try {{
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = "es-MX";
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+
+                utterance.onend = () => {{
+                    clearInterval(anim);
+                    label.innerText = "Respuesta de voz finalizada";
+                    box.style.opacity = "0.65";
+                }};
+
+                utterance.onerror = () => {{
+                    clearInterval(anim);
+                    label.innerText = "El navegador bloqueó la voz automática";
+                    box.style.opacity = "0.65";
+                }};
+
+                window.speechSynthesis.speak(utterance);
+            }} catch(e) {{
+                clearInterval(anim);
+                label.innerText = "No se pudo activar la voz";
+            }}
+        }}, 300);
+        </script>
+        """,
+        height=70
+    )
 
 def run_sql_router(question: str) -> Tuple[str, pd.DataFrame | None]:
     q = normalize_text(question)
@@ -849,7 +963,7 @@ def get_general_help_response(question: str) -> str | None:
 
     if any(p in q for p in general_patterns):
         return (
-            "Puedo ayudarte con este demo de retail mobile commerce. "
+            "Hola, puedo ayudarte con este demo de retail mobile commerce. "
             "Por ejemplo, puedo responder preguntas sobre productos, precios, "
             "inventario, pedidos, promociones, devoluciones, métodos de pago "
             "y políticas de entrega."
@@ -1135,6 +1249,11 @@ def format_number(value) -> str:
     except Exception:
         return str(value)
 
+def format_mxn(value) -> str:
+    try:
+        return f"${float(value):,.0f} "
+    except Exception:
+        return str(value)
 
 def build_statistical_summary(question: str, df: pd.DataFrame) -> str:
     if df is None or df.empty:
@@ -1219,7 +1338,7 @@ def build_statistical_summary(question: str, df: pd.DataFrame) -> str:
                         pass
                 else:
                     try:
-                        value = f"{float(value):,.2f}"
+                        value = format_mxn(value)
                     except Exception:
                         pass
 
@@ -1307,7 +1426,7 @@ def build_product_list_summary(df: pd.DataFrame) -> str:
     if {"product_name", "price", "stock"}.issubset(df.columns):
         for _, row in df.iterrows():
             resumen.append(
-                f"{row['product_name']} (${row['price']:,.0f}, stock: {int(row['stock'])})"
+                f"{row['product_name']} ({format_mxn(row['price'])}, stock: {int(row['stock'])})"
             )
 
         if len(resumen) == 1:
@@ -1790,22 +1909,72 @@ st.markdown("""
 
 current_turns = get_current_turns()
 
+current_turns = get_current_turns()
+question = None
+
 if current_turns >= MAX_TURNS:
     st.warning("Has sobrepasado el número de preguntas de este chat.")
-    if st.button("Iniciar otro chat", type="primary", ):
+    if st.button("Iniciar otro chat", type="primary"):
         create_new_chat()
         st.rerun()
 else:
-    question = st.chat_input("¿En qué te puedo ayudar?")
+    st.session_state.voice_mode = st.toggle(
+        "🎙️ Activa interacción por voz",
+        value=st.session_state.voice_mode,
+        help="Si está activo, puedes dictar tu consulta y el asistente responderá también con voz.",
+        key="voice_mode_toggle"
+    )
 
+    if st.session_state.voice_mode:
+        audio = mic_recorder(
+            start_prompt="🎙️",
+            stop_prompt="⏹️",
+            just_once=True,
+            use_container_width=True,
+            key="main_voice_mic",
+            format="wav"
+        )
 
-for msg in get_current_history():
-    with st.chat_message("user" if msg["role"] == "user" else "assistant"):
-        st.write(msg["content"])
+        if audio and "bytes" in audio and audio["bytes"]:
+            recognizer = sr.Recognizer()
+
+            try:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
+                    f.write(audio["bytes"])
+                    audio_path = f.name
+
+                with sr.AudioFile(audio_path) as source:
+                    audio_data = recognizer.record(source)
+
+                transcribed_text = recognizer.recognize_google(
+                    audio_data,
+                    language="es-MX"
+                )
+
+                st.session_state.pending_voice_question = transcribed_text
+                st.session_state.last_question_from_voice = True
+
+                st.success(f"Pregunta detectada: {transcribed_text}")
+
+            except Exception as e:
+                st.session_state.pending_voice_question = None
+                st.session_state.last_question_from_voice = False
+                st.warning(f"No pude entender el audio. Detalle: {e}")
+
+    text_question = st.chat_input("Escribe tu consulta...")
+
+    if text_question:
+        question = text_question
+        st.session_state.pending_voice_question = None
+        st.session_state.last_question_from_voice = False
+
+    elif st.session_state.pending_voice_question:
+        question = st.session_state.pending_voice_question
+        st.session_state.pending_voice_question = None
 
 current_chat_name = st.session_state.current_chat
 current_history = get_current_history()
-
+current_chat_name = st.session_state.current_chat
 if (
     len(current_history) == 0
     and st.session_state.welcome_shown.get(current_chat_name) != True
@@ -1944,10 +2113,26 @@ if get_current_turns() < MAX_TURNS and question:
                     response_text = answer_with_docs(question)
                 except Exception:
                     response_text = "No pude consultar la documentación local del demo."
-    # 3️⃣ mostrar respuesta
+        # 3️⃣ mostrar respuesta
     with st.chat_message("assistant"):
         response_placeholder = st.empty()
+
+        has_graph = (
+            scatter_plot_ready
+            or (route == "sql" and df is not None and not df.empty)
+        )
+
+        if has_graph and "observa la gráfica" not in response_text.lower():
+            response_text += "\n\nObserva la gráfica que aparece debajo para complementar el análisis."
+
         write_typing_effect(response_text, response_placeholder, speed=0.01)
+
+        # 🔥 ESTA LÍNEA ES CLAVE (faltaba o quedó arriba mal ubicada)
+        should_speak = st.session_state.voice_mode or st.session_state.last_question_from_voice
+
+    if should_speak:
+        speak_with_browser_voice(response_text)
+        st.session_state.last_question_from_voice = False
 
         # gráfico final del flujo conversacional scatter
         if scatter_plot_ready and scatter_plot_df is not None:
