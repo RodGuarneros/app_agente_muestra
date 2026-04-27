@@ -1965,8 +1965,8 @@ else:
         st.markdown('<div class="mic-wrapper">', unsafe_allow_html=True)
 
         audio = mic_recorder(
-            start_prompt="🎙️",
-            stop_prompt="⏹️",
+            start_prompt="🎙️ Presiona para que te escuche",
+            stop_prompt="⏹️ Presiona para detener",
             just_once=True,
             use_container_width=True,
             key="main_voice_mic",
