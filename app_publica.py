@@ -107,6 +107,31 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     border: none !important;
 }
 
+/* ===== Toggle de voz más grande ===== */
+.voice-toggle-wrapper {
+    margin-bottom: 22px;  /* 🔥 espacio extra abajo */
+}
+
+/* Agranda el icono 🎙️ */
+.voice-toggle-wrapper label {
+    font-size: 20px !important;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Agranda solo el emoji */
+.voice-toggle-wrapper label span {
+    font-size: 26px !important;
+}
+
+/* Hace el switch más grande */
+.voice-toggle-wrapper div[role="switch"] {
+    transform: scale(1.5);
+    margin-left: 10px;
+}                        
+
 [data-testid="stChatInput"] textarea::placeholder {
     color: #0B7A4B !important;
     opacity: 0.75 !important;
@@ -383,7 +408,6 @@ def speak_with_browser_voice(text: str):
         ">
             <span id="speaker" style="font-size:24px;">🔊</span>
             <span id="wave" style="font-size:18px; letter-spacing:2px;">▁ ▃ ▅ ▇ ▅ ▃ ▁</span>
-            <span id="label">Respondiendo por voz...</span>
         </div>
 
         <script>
@@ -1954,6 +1978,8 @@ if current_turns >= MAX_TURNS:
         create_new_chat()
         st.rerun()
 else:
+    st.markdown('<div class="voice-toggle-wrapper">', unsafe_allow_html=True)
+
     st.session_state.voice_mode = st.toggle(
         "🎙️ Activa interacción por voz",
         value=st.session_state.voice_mode,
@@ -1961,6 +1987,7 @@ else:
         key="voice_mode_toggle"
     )
 
+    st.markdown('</div>', unsafe_allow_html=True)
     if st.session_state.voice_mode:
         st.markdown('<div class="mic-wrapper">', unsafe_allow_html=True)
 
