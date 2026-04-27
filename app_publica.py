@@ -150,7 +150,7 @@ input, textarea {
 
 /* ===== Recuadro visual del micrófono ===== */
 iframe[title*="streamlit_mic_recorder"] {
-    background: #FFFFFF !important;
+    background: #90EE90 !important;
     border: 2px solid #CFE7D8 !important;
     border-radius: 22px !important;
     box-shadow: 0 10px 24px rgba(10, 122, 75, 0.18) !important;
@@ -162,7 +162,7 @@ iframe[title*="streamlit_mic_recorder"] {
 div:has(> iframe[title*="streamlit_mic_recorder"]) {
     max-width: 420px !important;
     margin: 14px auto 18px auto !important;
-    background: #FFFFFF !important;
+    background: #90EE90 !important;
     border-radius: 24px !important;
 }
 
