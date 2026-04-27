@@ -72,6 +72,24 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
     background: transparent !important;
     padding-top: 10px !important;
 }
+            
+            /* ===== Micrófono centrado, fondo blanco y grande ===== */
+.mic-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.mic-wrapper iframe {
+    background: white !important;
+    border-radius: 18px !important;
+    padding: 14px !important;
+    border: 2px solid #CFE7D8 !important;
+    box-shadow: 0 8px 20px rgba(10, 122, 75, 0.15);
+    transform: scale(1.2);
+}
 
 [data-testid="stChatInput"] > div {
     background: #FFFFFF !important;
@@ -128,6 +146,24 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
 /* Inputs generales */
 input, textarea {
     color: #0E1B16 !important;
+}
+
+/* ===== Recuadro visual del micrófono ===== */
+iframe[title*="streamlit_mic_recorder"] {
+    background: #FFFFFF !important;
+    border: 2px solid #CFE7D8 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 10px 24px rgba(10, 122, 75, 0.18) !important;
+    padding: 10px !important;
+    min-height: 74px !important;
+}
+
+/* Contenedor visual donde vive el mic */
+div:has(> iframe[title*="streamlit_mic_recorder"]) {
+    max-width: 420px !important;
+    margin: 14px auto 18px auto !important;
+    background: #FFFFFF !important;
+    border-radius: 24px !important;
 }
 
 iframe {
@@ -1926,6 +1962,8 @@ else:
     )
 
     if st.session_state.voice_mode:
+        st.markdown('<div class="mic-wrapper">', unsafe_allow_html=True)
+
         audio = mic_recorder(
             start_prompt="🎙️",
             stop_prompt="⏹️",
@@ -1935,6 +1973,7 @@ else:
             format="wav"
         )
 
+        st.markdown('</div>', unsafe_allow_html=True)
         if audio and "bytes" in audio and audio["bytes"]:
             recognizer = sr.Recognizer()
 
